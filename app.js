@@ -1,7 +1,7 @@
 var	express = require('express'),
 	app = express(),
 	searchesDAO = require('./searchesDAO'),
-	request = require('request');
+	request = require('request'),
 	MongoClient = require('mongodb');
 
 	
