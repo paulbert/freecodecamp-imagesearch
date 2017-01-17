@@ -11,6 +11,8 @@
 			<li><strong>thumbnail</strong>: The url of the thumbnail size image</li>
 			<li><strong>context</strong>: The url of the page where the image was found</li>
 		</ul>
+		<p>To get subsequent sets of ten results use the offset query parameter (1 gets 11-20, 2 gets 21-30 and so on):</p>
+		<code>https://fcc-paulbert-imagesearch.herokuapp.com/imagesearch/{query}?offset={pagenum}</code>
 		<code>https://fcc-paulbert-imagesearch.herokuapp.com/latest/imagesearch</code>
 		<p>Will return a JSON array with the most recent search queries and the time the search was done</p>
 		<h2>Try some searches!</h2>
