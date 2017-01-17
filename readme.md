@@ -14,8 +14,8 @@ To get subsequent sets of ten results use the offset query parameter (1 gets 11-
 
 `https://fcc-paulbert-imagesearch.herokuapp.com/imagesearch/{query}?offset={pagenum}`
 
-`https://fcc-paulbert-imagesearch.herokuapp.com/latest/imagesearch`
+The below will return a JSON array with the most recent search queries and the time the search was done
 
-Will return a JSON array with the most recent search queries and the time the search was done
+`https://fcc-paulbert-imagesearch.herokuapp.com/latest/imagesearch`
 
 [FreeCodeCamp](http://www.freecodecamp.com)
