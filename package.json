@@ -1,0 +1,16 @@
+{
+  "name": "freecodecamp-imagesearch",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Paul Albert",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0",
+    "mongodb": "^2.2.21",
+    "request": "^2.79.0"
+  }
+}
