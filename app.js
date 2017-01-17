@@ -10,6 +10,8 @@ var db_name = 'searchApp',
 	
 if(process.env.NODE_ENV === 'production'){
 	mongodb_connection_string = process.env.MONGODB_URI;
+} else {
+	require('dotenv').config();
 }
 
 MongoClient.connect(mongodb_connection_string,function(err,db) {
@@ -19,7 +21,7 @@ MongoClient.connect(mongodb_connection_string,function(err,db) {
 	if(!err) {
 		app.set('port',process.env.PORT || 3000);
 		app.get('/',function(req,res) {
-			res.sendfile('views/index.html', {root: __dirname })
+			res.sendFile('views/index.html', {root: __dirname })
 		});
 	
 		app.get('/favicon.ico', function(req, res) {
@@ -29,9 +31,9 @@ MongoClient.connect(mongodb_connection_string,function(err,db) {
 		app.get('/imagesearch/:search',function(req,res) {
 
 			var searchQuery = req.params.search,
-				pageNum = req.query.offset,
-				searchReq = { url: 'https://www.googleapis.com/customsearch/v1?key=' + process.env.CSE_KEY + '&cx=' + process.env.CSE_ID + '&searchType=image&q=' + searchQuery };
-	
+				startIndex = (req.query.offset * 10) + 1 || 1,
+				searchReqUrl = 'https://www.googleapis.com/customsearch/v1?key=' + process.env.CSE_KEY + '&cx=' + process.env.CSE_ID + '&searchType=image&q=' + searchQuery + '&start=' + startIndex;
+			
 			searches.addSearch(searchQuery,function(err) {
 				if(err) {
 					console.log(err);
@@ -40,16 +42,22 @@ MongoClient.connect(mongodb_connection_string,function(err,db) {
 				}
 			});
 			
-			request(searchReq,function(err,response,body) {
+			request(searchReqUrl,function(err,response,body) {
 				if(err) {
 					console.log(err);
 					res.send('Something went wrong...');
 				} else {
-					res.send(response);
+					var searchResults = JSON.parse(body).items;
+					if(searchResults) {
+						res.send(searchResults.map(function(val) {
+							return { url:val.link,snippet:val.snippet,thumbnail:val.image.thumbnailLink,context:val.image.contextLink };
+						}));
+					} else {
+						console.log(JSON.parse(body));
+						res.send('No results found');
+					}
 				}
 			});
-			
-			res.send({error:'Invalid url'});
 			
 		});
 		
